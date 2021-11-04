@@ -27,11 +27,11 @@ class OptionsMenu extends MusicBeatState
 	var options:Array<OptionCategory> = [
 		new OptionCategory("Gameplay", [
 			new DFJKOption(controls),
+			new MobileControls("The Mobile Contols"),
 			new DownscrollOption("Toggle making the notes scroll down rather than up."),
 			new GhostTapOption("Toggle counting pressing a directional input when no arrow is there as a miss."),
 			new Judgement("Customize your Hit Timings. (LEFT or RIGHT)"),
-			#if desktop new FPSCapOption("Change your FPS Cap."),
-			#end
+			new FPSCapOption("Change your FPS Cap."),
 			new ScrollSpeedOption("Change your scroll speed. (1 = Chart dependent)"),
 			new AccuracyDOption("Change how accuracy is calculated. (Accurate = Simple, Complex = Milisecond Based)"),
 			new ResetButtonOption("Toggle pressing R to gameover."),
@@ -61,8 +61,6 @@ class OptionsMenu extends MusicBeatState
 			new GraphicLoading("On startup, cache every character. Significantly decrease load times. (HIGH MEMORY)"),
 			new BotPlay("Showcase your charts and mods with autoplay.")]),
 		new OptionCategory("Saves and Data", [
-			#if desktop // new ReplayOption("View saved song replays."),
-			#end
 			new ResetScoreOption("Reset your score on all songs and weeks. This is irreversible!"),
 			new LockWeeksOption("Reset your story mode progress. This is irreversible!"),
 			new ResetSettings("Reset ALL your settings. This is irreversible!")
@@ -127,6 +125,10 @@ class OptionsMenu extends MusicBeatState
 
 		changeSelection();
 
+		#if mobileC
+		addVirtualPad(UP_DOWN, A_B);
+		#end
+
 		super.create();
 	}
 
@@ -176,9 +178,9 @@ class OptionsMenu extends MusicBeatState
 				}
 			}
 
-			if (FlxG.keys.justPressed.UP)
+			if (controls.UP_P)
 				changeSelection(-1);
-			if (FlxG.keys.justPressed.DOWN)
+			if (controls.DOWN_P)
 				changeSelection(1);
 
 			if (isCat)

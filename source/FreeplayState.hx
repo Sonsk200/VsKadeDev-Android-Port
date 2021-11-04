@@ -216,6 +216,10 @@ class FreeplayState extends MusicBeatState
 			trace(md);
 		 */
 
+		#if mobileC
+		addVirtualPad(FULL, A_B);
+		#end
+
 		super.create();
 	}
 
@@ -323,9 +327,9 @@ class FreeplayState extends MusicBeatState
 			FlxG.sound.music.volume -= 0.5 * FlxG.elapsed;
 		}
 
-		var upP = FlxG.keys.justPressed.UP;
-		var downP = FlxG.keys.justPressed.DOWN;
-		var accepted = FlxG.keys.justPressed.ENTER;
+		var upP = controls.UP_P;
+		var downP = controls.DOWN_P;
+		var accepted = controls.ACCEPT;
 		var charting = FlxG.keys.justPressed.SEVEN;
 
 		var gamepad:FlxGamepad = FlxG.gamepads.lastActive;
@@ -393,9 +397,9 @@ class FreeplayState extends MusicBeatState
 		}
 		else
 		{
-			if (FlxG.keys.justPressed.LEFT)
+			if (controls.LEFT_P)
 				changeDiff(-1);
-			if (FlxG.keys.justPressed.RIGHT)
+			if (controls.RIGHT_P)
 				changeDiff(1);
 		}
 
@@ -572,17 +576,21 @@ class FreeplayState extends MusicBeatState
 		diffText.text = CoolUtil.difficultyFromInt(curDifficulty).toUpperCase();
 
 		#if PRELOAD_ALL
-		if (songs[curSelected].songCharacter == "sm")
-		{
-			var data = songs[curSelected];
-			trace("Loading " + data.path + "/" + data.sm.header.MUSIC);
-			var bytes = File.getBytes(data.path + "/" + data.sm.header.MUSIC);
-			var sound = new Sound();
-			sound.loadCompressedDataFromByteArray(bytes.getData(), bytes.length);
-			FlxG.sound.playMusic(sound);
-		}
-		else
-			FlxG.sound.playMusic(Paths.inst(songs[curSelected].songName), 0);
+			#if FEATURE_STEPMANIA
+			if (songs[curSelected].songCharacter == "sm")
+			{
+				var data = songs[curSelected];
+				trace("Loading " + data.path + "/" + data.sm.header.MUSIC);
+				var bytes = File.getBytes(data.path + "/" + data.sm.header.MUSIC);
+				var sound = new Sound();
+				sound.loadCompressedDataFromByteArray(bytes.getData(), bytes.length);
+				FlxG.sound.playMusic(sound);
+			}
+			else
+				FlxG.sound.playMusic(Paths.inst(songs[curSelected].songName), 0);
+			#else
+			    FlxG.sound.playMusic(Paths.inst(songs[curSelected].songName), 0);		
+			#end
 		#end
 
 		var hmm;

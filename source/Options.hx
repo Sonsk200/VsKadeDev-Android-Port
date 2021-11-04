@@ -7,6 +7,7 @@ import Controls.KeyboardScheme;
 import flixel.FlxG;
 import openfl.display.FPS;
 import openfl.Lib;
+import options.CustomControlsState;
 
 class OptionCategory
 {
@@ -726,27 +727,6 @@ class NPSDisplayOption extends Option
 	}
 }
 
-class ReplayOption extends Option
-{
-	public function new(desc:String)
-	{
-		super();
-		description = desc;
-	}
-
-	public override function press():Bool
-	{
-		trace("switch");
-		FlxG.switchState(new LoadReplayState());
-		return false;
-	}
-
-	private override function updateDisplay():String
-	{
-		return "Load replays";
-	}
-}
-
 class AccuracyDOption extends Option
 {
 	public function new(desc:String)
@@ -1016,5 +996,26 @@ class ResetSettings extends Option
 	private override function updateDisplay():String
 	{
 		return confirm ? "Confirm Settings Reset" : "Reset Settings";
+	}
+}
+
+class MobileControls extends Option
+{
+	public function new(desc:String)
+	{
+		super();
+		description = desc;
+	}
+
+	public override function press():Bool
+	{
+		trace("switch");
+		FlxG.switchState(new CustomControlsState());
+		return false;
+	}
+
+	private override function updateDisplay():String
+	{
+		return "Mobile Controls";
 	}
 }

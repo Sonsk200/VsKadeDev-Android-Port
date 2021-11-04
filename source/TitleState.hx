@@ -47,13 +47,12 @@ class TitleState extends MusicBeatState
 
 	override public function create():Void
 	{
-		#if polymod
-		polymod.Polymod.init({modRoot: "mods", dirs: ['introMod']});
+		#if android
+		FlxG.android.preventDefaultKeys = [BACK];
 		#end
 
-		#if FEATURE_FILESYSTEM
-		if (!sys.FileSystem.exists(Sys.getCwd() + "/assets/replays"))
-			sys.FileSystem.createDirectory(Sys.getCwd() + "/assets/replays");
+		#if polymod
+		polymod.Polymod.init({modRoot: "mods", dirs: ['introMod']});
 		#end
 
 		@:privateAccess
@@ -61,13 +60,11 @@ class TitleState extends MusicBeatState
 			trace("Loaded " + openfl.Assets.getLibrary("default").assetsLoaded + " assets (DEFAULT)");
 		}
 
-		#if !cpp
 		FlxG.save.bind('funkin', 'ninjamuffin99');
 
 		PlayerSettings.init();
 
 		KadeEngineData.initSave();
-		#end
 
 		Highscore.load();
 
